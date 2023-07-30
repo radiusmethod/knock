@@ -6,6 +6,7 @@ import (
 	"net"
 	"net/http"
 	"sync"
+	"time"
 )
 
 var ports []int
@@ -13,11 +14,14 @@ var knocksReceived []int
 var listenAddress = "127.0.0.1"
 
 const numberOfKnocks int = 3
+const knockTimeoutSeconds time.Duration = 5
 
 func main() {
 	banner()
 	resultChan := make(chan int)
 	var wg sync.WaitGroup
+	interval := knockTimeoutSeconds * time.Second
+	ticker := time.NewTicker(interval)
 
 	wg.Add(numberOfKnocks)
 
@@ -29,8 +33,13 @@ func main() {
 	fmt.Printf("Knocks sequence: %v\n", ports)
 
 	for {
-		result := <-resultChan
-		checkKnocks(result)
+		select {
+		case <-ticker.C:
+			fmt.Println("Resetting knocks received.")
+			knocksReceived = []int{}
+		case result := <-resultChan:
+			checkKnocks(result)
+		}
 	}
 }
 
@@ -38,7 +47,7 @@ func checkKnocks(portReceived int) {
 	knocksReceived = append(knocksReceived, portReceived)
 	fmt.Printf("Knocks received so far: %v", knocksReceived)
 	if findSubArray(knocksReceived, ports) > -1 {
-		webServer()
+		go webServer()
 	}
 }
 
