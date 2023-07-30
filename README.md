@@ -2,7 +2,7 @@
 
 To run:
 
-`go main.go`
+`go run main.go`
 
 Once started you'll see the sequence.  You can use something like netcat to trigger the sequence.
 

@@ -15,6 +15,7 @@ var listenAddress = "127.0.0.1"
 const numberOfKnocks int = 3
 
 func main() {
+	banner()
 	resultChan := make(chan int)
 	var wg sync.WaitGroup
 
@@ -64,7 +65,7 @@ func webServer() {
 
 	// Set up the route and handler function
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "You found me!")
+		fmt.Fprint(w, "<h1>Found!</h1>")
 	})
 
 	// Start the server and handle incoming requests
@@ -119,4 +120,20 @@ func randomPort() int {
 	min := 10000
 	max := 49151
 	return rand.Intn(max-min+1) + min
+}
+
+func banner() {
+	fmt.Println("____    ____  _____   ______           _____          _____    ____    ____")
+	fmt.Println("|    |  |    ||\\    \\ |\\     \\     ____|\\    \\     ___|\\    \\  |    |  |    |")
+	fmt.Println("|    |  |    | \\\\    \\| \\     \\   /     /\\    \\   /    /\\    \\ |    |  |    |")
+	fmt.Println("|    | /    //  \\|    \\  \\     | /     /  \\    \\ |    |  |    ||    | /    //")
+	fmt.Println("|    |/ _ _//    |     \\  |    ||     |    |    ||    |  |____||    |/ _ _//")
+	fmt.Println("|    |\\    \\'    |      \\ |    ||     |    |    ||    |   ____ |    |\\    \\'")
+	fmt.Println("|    | \\    \\    |    |\\ \\|    ||\\     \\  /    /||    |  |    ||    | \\    \\")
+	fmt.Println("|____|  \\____\\   |____||\\_____/|| \\_____\\/____/ ||\\ ___\\/    /||____|  \\____\\")
+	fmt.Println("|    |   |    |  |    |/ \\|   || \\ |    ||    | /| |   /____/ ||    |   |    |")
+	fmt.Println("|____|   |____|  |____|   |___|/  \\|____||____|/  \\|___|    | /|____|   |____|")
+	fmt.Println("\\(       )/      \\(       )/       \\(    )/       \\( |____|/   \\(       )/")
+	fmt.Println("'       '        '       '         '    '         '   )/       '       '")
+	fmt.Println("                                                      '")
 }
